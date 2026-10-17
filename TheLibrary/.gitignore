@@ -1,0 +1,15 @@
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.log
+*.nupkg
+TestResults/
+.nuget/
+*.DS_Store
+.vscode/
+appsettings.Development.json
+*.db
+*.sqlite
