@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TheLibrary.DTOs
+namespace TheLibrary_BusinessLayer.DTOs
 {
     public class BookCreateDTO
     {

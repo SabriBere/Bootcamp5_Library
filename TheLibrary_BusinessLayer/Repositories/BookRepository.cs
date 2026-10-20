@@ -1,6 +1,6 @@
-﻿using TheLibrary.Models;
+﻿using TheLibrary_BusinessLayer.Models;
 
-namespace TheLibrary.Repositories
+namespace TheLibrary_BusinessLayer.Repositories
 {
     public class BookRepository
     {

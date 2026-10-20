@@ -12,4 +12,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="10.3.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TheLibrary_BusinessLayer\TheLibrary_BusinessLayer.csproj" />
+  </ItemGroup>
+
 </Project>

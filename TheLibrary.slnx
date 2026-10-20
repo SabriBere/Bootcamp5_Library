@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="TheLibrary/TheLibrary.csproj" />
+  <Project Path="TheLibrary_BusinessLayer/TheLibrary_BusinessLayer.csproj" Id="4c8fdf3f-5d2c-43b5-9cbb-1c104711ca0a" />
 </Solution>

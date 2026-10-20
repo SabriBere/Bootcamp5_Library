@@ -1,8 +1,17 @@
+using TheLibrary.Controllers;
+using TheLibrary_BusinessLayer.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+//var service = new BookService();
+//var controller = new BookController(service);
+//controller.AddService(service);
+//controller.bookService = service;
 
+// Add services to the container.
+builder.Services.AddTransient<IBookService, BookService>();
 builder.Services.AddControllers();
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
