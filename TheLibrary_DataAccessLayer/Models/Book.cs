@@ -1,4 +1,4 @@
-﻿namespace TheLibrary_BusinessLayer.Models
+﻿namespace TheLibrary_DataAccessLayer.Models
 {
     public class Book
     {

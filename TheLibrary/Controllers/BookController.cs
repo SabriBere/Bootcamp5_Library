@@ -9,14 +9,6 @@ namespace TheLibrary.Controllers
 
     public class BookController : ControllerBase
     {
-        //private static List<Book> _books = new List<Book>()
-        //    {
-        //        new Book { Id = 1, Title = "El Quijote", Year = "1605", IsAvailable = true },
-        //        new Book { Id = 2, Title = "Cien Años de Soledad", Year = "1967", IsAvailable = true },
-        //        new Book { Id = 3, Title = "La Sombra del Viento", Year = "2001", IsAvailable = true }
-
-        //    };
-
         // Inyección de dependencias del servicio de libros
         private readonly IBookService _bookService;
 
@@ -30,17 +22,13 @@ namespace TheLibrary.Controllers
         public IActionResult GetAll()
         {
             var books = _bookService.GetAllBooks();
-            //var books = _books;
-            return Ok();
+            return Ok(books);
         }
 
         // Read by Id
         [HttpGet("{id:int}")]
         public IActionResult GetBookById(int id)
         {
-            //var book = _books.FirstOrDefault(b => b.Id == id);
-            //if (book == null)
-            //    return NotFound(new { Message = $"Book with ID {id} not found" });
             BookDTO book;
             try
             {
@@ -65,16 +53,7 @@ namespace TheLibrary.Controllers
         [HttpPost]
         public IActionResult Create([FromBody] BookCreateDTO bookCreateDTO)
         {
-            //// Mapear el DTO a la entidad Book
-            //var newBook = new Book
-            //{
-            //    Title = bookCreateDTO.Title,
-            //    Year = bookCreateDTO.Year,
-            //    IsAvailable = true // Por defecto, el libro está disponible
-            //};
-
             // Lógica para guardar con un 201 Created
-
             try
             {
                 _bookService.AddBook(bookCreateDTO);
@@ -92,9 +71,6 @@ namespace TheLibrary.Controllers
                 return BadRequest(ex.Message);
             }
 
-            // Asignar un nuevo Id al libro
-            //newBook.Id = _books.Max(b => b.Id) + 1;
-            //_books.Add(newBook);
             return Ok(); // Retornar el libro creado con un 201 Created)
         }
 
@@ -102,13 +78,6 @@ namespace TheLibrary.Controllers
         [HttpDelete("{id:int}")]
         public IActionResult DeleteBook(int id)
         {
-            //var book = _bookService.GetBookById(id);
-            //var book = _books.FirstOrDefault(b => b.Id == id);
-            //if (book == null)
-            //{
-            //    return NotFound(new { Message = $"Book with ID {id} not found" });
-            //}
-            //_books.Remove(book);
             try
             {
                 _bookService.DeleteBook(id);

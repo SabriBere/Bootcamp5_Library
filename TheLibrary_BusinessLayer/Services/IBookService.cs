@@ -1,5 +1,5 @@
 ﻿using TheLibrary_BusinessLayer.DTOs;
-using TheLibrary_BusinessLayer.Models;
+using TheLibrary_DataAccessLayer.Models;
 
 namespace TheLibrary_BusinessLayer.Services
 {

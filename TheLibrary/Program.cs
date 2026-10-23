@@ -1,5 +1,9 @@
 using TheLibrary.Controllers;
 using TheLibrary_BusinessLayer.Services;
+using TheLibrary_DataAccessLayer.Repositories;
+using TheLibrary_DataAccessLayer.Data;
+
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,8 +12,18 @@ var builder = WebApplication.CreateBuilder(args);
 //controller.AddService(service);
 //controller.bookService = service;
 
+
+//BookController -> BookService -> BookRepository
+//PL -> BL -> DAL
+//PL -> DAL
+//Program
+
+//Add DbContext
+
 // Add services to the container.
-builder.Services.AddTransient<IBookService, BookService>();
+//AddSingleton, AddScoped, AddTransient
+builder.Services.AddScoped<IBookRepository, BookRepository>();
+builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddControllers();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

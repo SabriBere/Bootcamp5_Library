@@ -1,4 +1,12 @@
 <Solution>
-  <Project Path="TheLibrary/TheLibrary.csproj" />
-  <Project Path="TheLibrary_BusinessLayer/TheLibrary_BusinessLayer.csproj" Id="4c8fdf3f-5d2c-43b5-9cbb-1c104711ca0a" />
+  <Folder Name="/BL/">
+    <Project Path="TheLibrary_BusinessLayer/TheLibrary_BusinessLayer.csproj" Id="4c8fdf3f-5d2c-43b5-9cbb-1c104711ca0a" />
+  </Folder>
+  <Folder Name="/DAL/">
+    <Project Path="TheLibrary_DataAccessLayer/TheLibrary_DataAccessLayer.csproj" Id="b666efbf-7ada-4f53-955f-a1d2fe762019" />
+  </Folder>
+  <Folder Name="/PL/">
+    <Project Path="TheLibrary/TheLibrary_PresentationLayer.csproj" />
+    <Project Path="TheLibrary_ConsoleApp/TheLibrary_ConsoleApp.csproj" Id="e63439cd-d501-421c-b606-0522c0e24c1e" />
+  </Folder>
 </Solution>

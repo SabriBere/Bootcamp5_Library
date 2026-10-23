@@ -1,8 +1,8 @@
-﻿using TheLibrary_BusinessLayer.Models;
+﻿using TheLibrary_DataAccessLayer.Models;
 
-namespace TheLibrary_BusinessLayer.Repositories
+namespace TheLibrary_DataAccessLayer.Repositories
 {
-    public class BookRepository
+    public class BookRepository: IBookRepository
     {
         // Colocar la lista 
         private static List<Book> _books = new List<Book>()
@@ -10,7 +10,6 @@ namespace TheLibrary_BusinessLayer.Repositories
                 new Book { Id = 1, Title = "El Quijote", Year = "1605", IsAvailable = true },
                 new Book { Id = 2, Title = "Cien Años de Soledad", Year = "1967", IsAvailable = true },
                 new Book { Id = 3, Title = "La Sombra del Viento", Year = "2001", IsAvailable = true }
-    
             };
 
         public List<Book> GetAllBooks()
