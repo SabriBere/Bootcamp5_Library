@@ -19,6 +19,9 @@ var builder = WebApplication.CreateBuilder(args);
 //Program
 
 //Add DbContext
+builder.Services.AddDbContext<TheLibraryDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
 
 // Add services to the container.
 //AddSingleton, AddScoped, AddTransient

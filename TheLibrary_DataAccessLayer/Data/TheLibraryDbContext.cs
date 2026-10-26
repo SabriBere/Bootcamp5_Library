@@ -15,5 +15,9 @@ namespace TheLibrary_DataAccessLayer.Data
         }
 
         public DbSet<Book> Books { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Library> Libraries { get; set; }
+        public DbSet<Rol> Roles { get; set; }
     }
 }
