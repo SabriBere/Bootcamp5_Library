@@ -1,14 +1,17 @@
 ﻿namespace TheLibrary_DataAccessLayer.Models
 {
-    public class Book //Esto represnta un ejemplar
+    // Un Book representa un ejemplar de un libro
+    public class Book
     {
         public int Id { get; set; }
         public string Title { get; set; }
         public string Year { get; set; }
         public bool IsAvailable { get; set; }
 
-        //Navegation property
-        public int LibrayBranchId { get; set; }
-        public LibrayBranch LibrayBranch { get; set; }
+        // Navigation properties
+        public int LibraryBranchId { get; set; }
+        public LibraryBranch LibraryBranch { get; set; } = null!;
+        //necesito un DTO para recortar el listado de libros de esa sucursal
+        //solo devolver libro y info sucursal no más
     }
 }

@@ -12,8 +12,10 @@ namespace TheLibrary_DataAccessLayer.Models
         public required string Email { get; set; }
         public DateTime? DateOfBirth { get; set; }
 
-        //Usuario puede ser socio de una o varias bibliotecas
+        //puede ser socio de 1 o más bibliotecas
         public virtual ICollection<Library> Libraries { get; set; } = new List<Library>();
-        public ICollection<Role> Roles { get; set; }
+
+        //roles
+        public ICollection<Role> Roles { get; set; } = new List<Role>();
     }
 }

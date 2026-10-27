@@ -12,8 +12,8 @@ using TheLibrary_DataAccessLayer.Data;
 namespace TheLibrary_DataAccessLayer.Migrations
 {
     [DbContext(typeof(TheLibraryDbContext))]
-    [Migration("20261026225229_ApplySecondBigChanges")]
-    partial class ApplySecondBigChanges
+    [Migration("20261026225711_AddLibraryRelationships")]
+    partial class AddLibraryRelationships
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,22 +25,7 @@ namespace TheLibrary_DataAccessLayer.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("LibraryUser", b =>
-                {
-                    b.Property<int>("LibrariesId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("UsersId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("LibrariesId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("LibraryUser");
-                });
-
-            modelBuilder.Entity("RoleUser", b =>
+            modelBuilder.Entity("RolUser", b =>
                 {
                     b.Property<int>("RolesId")
                         .HasColumnType("integer");
@@ -52,7 +37,7 @@ namespace TheLibrary_DataAccessLayer.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("RoleUser");
+                    b.ToTable("RolUser");
                 });
 
             modelBuilder.Entity("TheLibrary_DataAccessLayer.Models.Book", b =>
@@ -66,7 +51,10 @@ namespace TheLibrary_DataAccessLayer.Migrations
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("LibrayBranchId")
+                    b.Property<int>("LibraryBranchId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("LibraryId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Title")
@@ -79,7 +67,9 @@ namespace TheLibrary_DataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LibrayBranchId");
+                    b.HasIndex("LibraryBranchId");
+
+                    b.HasIndex("LibraryId");
 
                     b.ToTable("Books");
                 });
@@ -101,12 +91,17 @@ namespace TheLibrary_DataAccessLayer.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Libraries");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Libraries", (string)null);
                 });
 
-            modelBuilder.Entity("TheLibrary_DataAccessLayer.Models.LibrayBranch", b =>
+            modelBuilder.Entity("TheLibrary_DataAccessLayer.Models.LibraryBranch", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -118,7 +113,7 @@ namespace TheLibrary_DataAccessLayer.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("LibraryId")
+                    b.Property<int?>("LibraryId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")
@@ -129,10 +124,10 @@ namespace TheLibrary_DataAccessLayer.Migrations
 
                     b.HasIndex("LibraryId");
 
-                    b.ToTable("LibrayBranches");
+                    b.ToTable("LibraryBranches");
                 });
 
-            modelBuilder.Entity("TheLibrary_DataAccessLayer.Models.Role", b =>
+            modelBuilder.Entity("TheLibrary_DataAccessLayer.Models.Rol", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -172,29 +167,19 @@ namespace TheLibrary_DataAccessLayer.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int?>("LibraryBranchId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("LibraryBranchId");
 
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("LibraryUser", b =>
+            modelBuilder.Entity("RolUser", b =>
                 {
-                    b.HasOne("TheLibrary_DataAccessLayer.Models.Library", null)
-                        .WithMany()
-                        .HasForeignKey("LibrariesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TheLibrary_DataAccessLayer.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("RoleUser", b =>
-                {
-                    b.HasOne("TheLibrary_DataAccessLayer.Models.Role", null)
+                    b.HasOne("TheLibrary_DataAccessLayer.Models.Rol", null)
                         .WithMany()
                         .HasForeignKey("RolesId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -209,34 +194,59 @@ namespace TheLibrary_DataAccessLayer.Migrations
 
             modelBuilder.Entity("TheLibrary_DataAccessLayer.Models.Book", b =>
                 {
-                    b.HasOne("TheLibrary_DataAccessLayer.Models.LibrayBranch", "LibrayBranch")
+                    b.HasOne("TheLibrary_DataAccessLayer.Models.LibraryBranch", "LibraryBranch")
                         .WithMany("Books")
-                        .HasForeignKey("LibrayBranchId")
+                        .HasForeignKey("LibraryBranchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("LibrayBranch");
-                });
-
-            modelBuilder.Entity("TheLibrary_DataAccessLayer.Models.LibrayBranch", b =>
-                {
                     b.HasOne("TheLibrary_DataAccessLayer.Models.Library", "Library")
-                        .WithMany("LibrayBranches")
+                        .WithMany()
                         .HasForeignKey("LibraryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Library");
+
+                    b.Navigation("LibraryBranch");
                 });
 
             modelBuilder.Entity("TheLibrary_DataAccessLayer.Models.Library", b =>
                 {
-                    b.Navigation("LibrayBranches");
+                    b.HasOne("TheLibrary_DataAccessLayer.Models.User", null)
+                        .WithMany("Libraries")
+                        .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("TheLibrary_DataAccessLayer.Models.LibrayBranch", b =>
+            modelBuilder.Entity("TheLibrary_DataAccessLayer.Models.LibraryBranch", b =>
+                {
+                    b.HasOne("TheLibrary_DataAccessLayer.Models.Library", null)
+                        .WithMany("LibraryBranches")
+                        .HasForeignKey("LibraryId");
+                });
+
+            modelBuilder.Entity("TheLibrary_DataAccessLayer.Models.User", b =>
+                {
+                    b.HasOne("TheLibrary_DataAccessLayer.Models.LibraryBranch", null)
+                        .WithMany("Users")
+                        .HasForeignKey("LibraryBranchId");
+                });
+
+            modelBuilder.Entity("TheLibrary_DataAccessLayer.Models.Library", b =>
+                {
+                    b.Navigation("LibraryBranches");
+                });
+
+            modelBuilder.Entity("TheLibrary_DataAccessLayer.Models.LibraryBranch", b =>
                 {
                     b.Navigation("Books");
+
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("TheLibrary_DataAccessLayer.Models.User", b =>
+                {
+                    b.Navigation("Libraries");
                 });
 #pragma warning restore 612, 618
         }

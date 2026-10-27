@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -9,28 +8,34 @@ namespace TheLibrary_DataAccessLayer.Models
     public class Library
     {
         public int Id { get; set; }
+
+        [MaxLength(50)]
         public required string Name { get; set; }
         public required string Address { get; set; }
 
-        public ICollection<LibrayBranch> LibrayBranches { get; set; }
-        public ICollection<User> Users { get; set; }
+        //listado de sucursales
+        public List<LibraryBranch> LibraryBranches { get; set; } = new();
+
+        // N:M - Miembros - EF crea la tabla intermedia con las FK de ambos
+        public ICollection<User> Users { get; set; } = new List<User>();
     }
 
-    //Una sucursal de biblioteca tiene muchos libros (Navegación de ida)
-    //y el libro pertenece a una sola sucursal de biblioteca (Navegación de vuelta)
+    // Una biblioteca puede tener muchas sucursales (navegación de ida)
+    // y cada sucursal pertenece a una sola biblioteca (navegación de vuelta).
 
-    //Sucursal - libros -> sucursal tiene lista de libros
-    //libro - Sucursal -> libro tiene un id de sucursal 
+    // Sucursal -> Books: la sucursal contiene una lista de libros.
+    // Book -> Sucursal: el libro contiene el Id de su sucursal.
 
-    //Al agregar "Branch" como entidad podemos desglosar cuando hay varias sucursales de una misma biblioteca
-    //Ejemplo: UNNE tiene varias sucursales
-    //UNNE
-    ////Corrientes Centro
-    ////Sede Regional Chaco
-    ////Corrientes Campus
-    //Ejemplo: UTN tiene varias sucursales
-    //UTN
-    ////Sede Regional Resistencia
-    ////Sede Buenos Aires
-    ////Sede Córdoba
+    // Agregar Branch como entidad permite representar varias sucursales
+    // pertenecientes a una misma biblioteca.
+
+    // Ejemplo: UNNE tiene varias sucursales
+    //// Corrientes Centro
+    //// Sede Regional Chaco
+    //// Corrientes Campus
+
+    // Ejemplo: UTN tiene varias sucursales
+    //// Sede Regional Resistencia
+    //// Sede Buenos Aires
+    //// Sede Córdoba
 }

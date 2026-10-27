@@ -14,31 +14,46 @@ namespace TheLibrary_DataAccessLayer.Data
             
         }
 
-        public DbSet<Library> Libraries { get; set; }
-        public DbSet<LibrayBranch> LibrayBranches { get; set; }
         public DbSet<Book> Books { get; set; }
         public DbSet<User> Users { get; set; }
-        //public DbSet<Employee> Employees { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Library> Libraries { get; set; }
+        public DbSet<LibraryBranch> LibraryBranches { get; set; }
         public DbSet<Role> Roles { get; set; }
 
-        //Configurar los modelos usando Fluent API
+        //configurar modelos usando Fluent API
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //toco las entidad que quiero, no es nesario que sean todas
+            base.OnModelCreating(modelBuilder);
+
+            //se puede migrar a una carpeta configuration y crear clases con cada entidad
             modelBuilder.Entity<Library>(library =>
             {
-                library.HasKey(l => l.Id);
+                library.ToTable("Libraries").HasKey(l =>l.Id);
+                //tiene más peso la fluent API pero genera confusión al interpretar
                 library.Property(l => l.Name).IsRequired().HasMaxLength(100);
                 library.Property(l => l.Address).IsRequired().HasMaxLength(250);
-                library.HasMany(l => l.LibrayBranches)
-                    .WithOne(lb => lb.Library)
-                    .HasForeignKey(lb => lb.LibraryId);
+
+                //se puede crear nombre para FK
+                library.HasMany(l => l.LibraryBranches)
+                .WithOne(lb => lb.Library)
+                .HasForeignKey(lb => lb.LibraryId);
+
+                // Una biblioteca tiene muchos usuarios y un usuario puede ser socio de varias bibliotecas
+                library.HasMany(l => l.Users)
+                .WithMany(u => u.Libraries);
+
+                //establecer las relaciones - agregar configuración
+
             });
 
-            //Nos queda agregar configuraciones para el resto de entidades
-            //LibraryBranch
-            //Book
-            //User
-            //Role
+            // Nos queda agregar configuraciones para el resto de entidades:
+            // LibraryBranch
+            // Book
+            // User
+            // Role
         }
+
     }
 }

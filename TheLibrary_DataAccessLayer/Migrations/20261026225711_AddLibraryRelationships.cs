@@ -7,17 +7,13 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace TheLibrary_DataAccessLayer.Migrations
 {
     /// <inheritdoc />
-    public partial class ApplySecondBigChanges : Migration
+    public partial class AddLibraryRelationships : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_Users_Roles_RolId",
-                table: "Users");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Users_RolId",
                 table: "Users");
 
             migrationBuilder.DropColumn(
@@ -29,16 +25,22 @@ namespace TheLibrary_DataAccessLayer.Migrations
                 table: "Users");
 
             migrationBuilder.DropColumn(
-                name: "RolId",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
                 name: "Turn",
                 table: "Users");
 
             migrationBuilder.DropColumn(
                 name: "yearOfBirth",
                 table: "Users");
+
+            migrationBuilder.RenameColumn(
+                name: "RolId",
+                table: "Users",
+                newName: "LibraryBranchId");
+
+            migrationBuilder.RenameIndex(
+                name: "IX_Users_RolId",
+                table: "Users",
+                newName: "IX_Users_LibraryBranchId");
 
             migrationBuilder.AddColumn<DateTime>(
                 name: "DateOfBirth",
@@ -56,59 +58,47 @@ namespace TheLibrary_DataAccessLayer.Migrations
                 oldType: "text");
 
             migrationBuilder.AddColumn<int>(
-                name: "LibrayBranchId",
+                name: "UserId",
+                table: "Libraries",
+                type: "integer",
+                nullable: true);
+
+            migrationBuilder.AddColumn<int>(
+                name: "LibraryBranchId",
+                table: "Books",
+                type: "integer",
+                nullable: false,
+                defaultValue: 0);
+
+            migrationBuilder.AddColumn<int>(
+                name: "LibraryId",
                 table: "Books",
                 type: "integer",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.CreateTable(
-                name: "LibraryUser",
-                columns: table => new
-                {
-                    LibrariesId = table.Column<int>(type: "integer", nullable: false),
-                    UsersId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_LibraryUser", x => new { x.LibrariesId, x.UsersId });
-                    table.ForeignKey(
-                        name: "FK_LibraryUser_Libraries_LibrariesId",
-                        column: x => x.LibrariesId,
-                        principalTable: "Libraries",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_LibraryUser_Users_UsersId",
-                        column: x => x.UsersId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "LibrayBranches",
+                name: "LibraryBranches",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Address = table.Column<string>(type: "text", nullable: false),
-                    LibraryId = table.Column<int>(type: "integer", nullable: false)
+                    LibraryId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LibrayBranches", x => x.Id);
+                    table.PrimaryKey("PK_LibraryBranches", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_LibrayBranches_Libraries_LibraryId",
+                        name: "FK_LibraryBranches_Libraries_LibraryId",
                         column: x => x.LibraryId,
                         principalTable: "Libraries",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "RoleUser",
+                name: "RolUser",
                 columns: table => new
                 {
                     RolesId = table.Column<int>(type: "integer", nullable: false),
@@ -116,15 +106,15 @@ namespace TheLibrary_DataAccessLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoleUser", x => new { x.RolesId, x.UsersId });
+                    table.PrimaryKey("PK_RolUser", x => new { x.RolesId, x.UsersId });
                     table.ForeignKey(
-                        name: "FK_RoleUser_Roles_RolesId",
+                        name: "FK_RolUser_Roles_RolesId",
                         column: x => x.RolesId,
                         principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RoleUser_Users_UsersId",
+                        name: "FK_RolUser_Users_UsersId",
                         column: x => x.UsersId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -132,52 +122,96 @@ namespace TheLibrary_DataAccessLayer.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Books_LibrayBranchId",
+                name: "IX_Libraries_UserId",
+                table: "Libraries",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Books_LibraryBranchId",
                 table: "Books",
-                column: "LibrayBranchId");
+                column: "LibraryBranchId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LibraryUser_UsersId",
-                table: "LibraryUser",
-                column: "UsersId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LibrayBranches_LibraryId",
-                table: "LibrayBranches",
+                name: "IX_Books_LibraryId",
+                table: "Books",
                 column: "LibraryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RoleUser_UsersId",
-                table: "RoleUser",
+                name: "IX_LibraryBranches_LibraryId",
+                table: "LibraryBranches",
+                column: "LibraryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RolUser_UsersId",
+                table: "RolUser",
                 column: "UsersId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Books_LibrayBranches_LibrayBranchId",
+                name: "FK_Books_Libraries_LibraryId",
                 table: "Books",
-                column: "LibrayBranchId",
-                principalTable: "LibrayBranches",
+                column: "LibraryId",
+                principalTable: "Libraries",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Books_LibraryBranches_LibraryBranchId",
+                table: "Books",
+                column: "LibraryBranchId",
+                principalTable: "LibraryBranches",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Libraries_Users_UserId",
+                table: "Libraries",
+                column: "UserId",
+                principalTable: "Users",
+                principalColumn: "Id");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Users_LibraryBranches_LibraryBranchId",
+                table: "Users",
+                column: "LibraryBranchId",
+                principalTable: "LibraryBranches",
+                principalColumn: "Id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Books_LibrayBranches_LibrayBranchId",
+                name: "FK_Books_Libraries_LibraryId",
                 table: "Books");
 
-            migrationBuilder.DropTable(
-                name: "LibraryUser");
+            migrationBuilder.DropForeignKey(
+                name: "FK_Books_LibraryBranches_LibraryBranchId",
+                table: "Books");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Libraries_Users_UserId",
+                table: "Libraries");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Users_LibraryBranches_LibraryBranchId",
+                table: "Users");
 
             migrationBuilder.DropTable(
-                name: "LibrayBranches");
+                name: "LibraryBranches");
 
             migrationBuilder.DropTable(
-                name: "RoleUser");
+                name: "RolUser");
 
             migrationBuilder.DropIndex(
-                name: "IX_Books_LibrayBranchId",
+                name: "IX_Libraries_UserId",
+                table: "Libraries");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Books_LibraryBranchId",
+                table: "Books");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Books_LibraryId",
                 table: "Books");
 
             migrationBuilder.DropColumn(
@@ -185,8 +219,26 @@ namespace TheLibrary_DataAccessLayer.Migrations
                 table: "Users");
 
             migrationBuilder.DropColumn(
-                name: "LibrayBranchId",
+                name: "UserId",
+                table: "Libraries");
+
+            migrationBuilder.DropColumn(
+                name: "LibraryBranchId",
                 table: "Books");
+
+            migrationBuilder.DropColumn(
+                name: "LibraryId",
+                table: "Books");
+
+            migrationBuilder.RenameColumn(
+                name: "LibraryBranchId",
+                table: "Users",
+                newName: "RolId");
+
+            migrationBuilder.RenameIndex(
+                name: "IX_Users_LibraryBranchId",
+                table: "Users",
+                newName: "IX_Users_RolId");
 
             migrationBuilder.AddColumn<string>(
                 name: "Discriminator",
@@ -198,12 +250,6 @@ namespace TheLibrary_DataAccessLayer.Migrations
 
             migrationBuilder.AddColumn<int>(
                 name: "LibraryId",
-                table: "Users",
-                type: "integer",
-                nullable: true);
-
-            migrationBuilder.AddColumn<int>(
-                name: "RolId",
                 table: "Users",
                 type: "integer",
                 nullable: true);
@@ -229,11 +275,6 @@ namespace TheLibrary_DataAccessLayer.Migrations
                 oldClrType: typeof(string),
                 oldType: "character varying(50)",
                 oldMaxLength: 50);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_RolId",
-                table: "Users",
-                column: "RolId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Users_Roles_RolId",

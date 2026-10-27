@@ -5,7 +5,7 @@
 namespace TheLibrary_DataAccessLayer.Migrations
 {
     /// <inheritdoc />
-    public partial class AlterTable_Libraries_ChangeNameConstraint : Migration
+    public partial class ConfigureLibraryEntities : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
