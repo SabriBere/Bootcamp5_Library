@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="TheLibrary_DataAccessLayer.Models.Library">
+    <Position X="1.5" Y="1.25" Width="1.5" />
+    <AssociationLine Name="Users" Type="TheLibrary_DataAccessLayer.Models.User" FixedToPoint="true">
+      <Path>
+        <Point X="1.938" Y="2.738" />
+        <Point X="1.938" Y="4" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAACACAAAAAAAAAAAAAAAAQAAAAAAAAiAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Library.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="LibrayBranches" />
+      <Property Name="Users" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="TheLibrary_DataAccessLayer.Models.LibrayBranch">
+    <Position X="4.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAgAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Models\LibraryBranch.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Books" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="TheLibrary_DataAccessLayer.Models.Book">
+    <Position X="7.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAABAAIAEAAAABAAAAAAAAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>Models\Book.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="LibrayBranch" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="TheLibrary_DataAccessLayer.Models.User">
+    <Position X="1.5" Y="4" Width="1.5" />
+    <AssociationLine Name="Libraries" Type="TheLibrary_DataAccessLayer.Models.Library">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.873" Y="0.085" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAACAEAAACAAAAAAAAAAAAAAAgAQAAAAAAAAAAAAAAw=</HashCode>
+      <FileName>Models\User.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Roles" />
+      <Property Name="Libraries" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="TheLibrary_DataAccessLayer.Models.Role">
+    <Position X="5.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACACAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Role.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Users" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
