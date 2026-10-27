@@ -5,7 +5,7 @@ using TheLibrary_DataAccessLayer.Models;
 
 namespace TheLibrary_DataAccessLayer.Models
 {
-    public class Rol
+    public class Role
     {
         public int Id { get; set; }
         public required string Name { get; set; }

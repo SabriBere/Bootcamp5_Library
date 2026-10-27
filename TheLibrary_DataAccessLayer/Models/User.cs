@@ -16,6 +16,6 @@ namespace TheLibrary_DataAccessLayer.Models
         public virtual ICollection<Library> Libraries { get; set; } = new List<Library>();
 
         //roles
-        public ICollection<Rol> Roles { get; set; } = new List<Rol>();
+        public ICollection<Role> Roles { get; set; } = new List<Role>();
     }
 }

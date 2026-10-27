@@ -19,7 +19,7 @@ namespace TheLibrary_DataAccessLayer.Data
         // public DbSet<Employee> Employees { get; set; }
         public DbSet<Library> Libraries { get; set; }
         public DbSet<LibraryBranch> LibraryBranches { get; set; }
-        public DbSet<Rol> Roles { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         //configurar modelos usando Fluent API
         protected override void OnModelCreating(ModelBuilder modelBuilder)
