@@ -15,13 +15,27 @@ namespace TheLibrary_DataAccessLayer.Models
 
         //listado de sucursales
         public List<LibraryBranch> LibraryBranches { get; set; } = new();
+
+        // N:M - Miembros - EF crea la tabla intermedia con las FK de ambos
+        public ICollection<User> Users { get; set; } = new List<User>();
     }
 
-    //UNNE - Centro
-    //Sede Regional Chaco
-    //Sede Regional Corrientes
+    // Una biblioteca puede tener muchas sucursales (navegación de ida)
+    // y cada sucursal pertenece a una sola biblioteca (navegación de vuelta).
 
-    //UTN
-    //Chaco
-    //Buenos Aires
+    // Sucursal -> Books: la sucursal contiene una lista de libros.
+    // Book -> Sucursal: el libro contiene el Id de su sucursal.
+
+    // Agregar Branch como entidad permite representar varias sucursales
+    // pertenecientes a una misma biblioteca.
+
+    // Ejemplo: UNNE tiene varias sucursales
+    //// Corrientes Centro
+    //// Sede Regional Chaco
+    //// Corrientes Campus
+
+    // Ejemplo: UTN tiene varias sucursales
+    //// Sede Regional Resistencia
+    //// Sede Buenos Aires
+    //// Sede Córdoba
 }

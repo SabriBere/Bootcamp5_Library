@@ -1,6 +1,6 @@
 ﻿namespace TheLibrary_DataAccessLayer.Models
 {
-    //1 ejemplar de x libro
+    // Un Book representa un ejemplar de un libro
     public class Book
     {
         public int Id { get; set; }
@@ -8,6 +8,7 @@
         public string Year { get; set; }
         public bool IsAvailable { get; set; }
 
+        // Navigation properties
         public int LibraryId { get; set; }
         public Library Library { get; set; } = null!;
 

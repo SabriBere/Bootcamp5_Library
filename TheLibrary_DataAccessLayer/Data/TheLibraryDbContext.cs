@@ -16,7 +16,7 @@ namespace TheLibrary_DataAccessLayer.Data
 
         public DbSet<Book> Books { get; set; }
         public DbSet<User> Users { get; set; }
-        // public DbSet<Employee> Employees { get; set; }
+        public DbSet<Employee> Employees { get; set; }
         public DbSet<Library> Libraries { get; set; }
         public DbSet<LibraryBranch> LibraryBranches { get; set; }
         public DbSet<Role> Roles { get; set; }
@@ -40,11 +40,19 @@ namespace TheLibrary_DataAccessLayer.Data
                 .WithOne(lb => lb.Library)
                 .HasForeignKey(lb => lb.LibraryId);
 
+                // Una biblioteca tiene muchos usuarios y un usuario puede ser socio de varias bibliotecas
+                library.HasMany(l => l.Users)
+                .WithMany(u => u.Libraries);
+
                 //establecer las relaciones - agregar configuración
 
             });
 
-            //agregar el resto de configuraciones para las otras entidades
+            // Nos queda agregar configuraciones para el resto de entidades:
+            // LibraryBranch
+            // Book
+            // User
+            // Role
         }
 
     }
