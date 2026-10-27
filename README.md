@@ -60,6 +60,16 @@ dotnet ef database update \
   --startup-project TheLibrary
 ```
 
+### Relaciones
+
+- `Library → LibraryBranch`: 1:N. Una biblioteca tiene varias sucursales.
+- `LibraryBranch → Book`: 1:N. Una sucursal tiene muchos ejemplares.
+- `Library ↔ User`: N:M. Un usuario puede ser socio de varias bibliotecas.
+- `User ↔ Role`: N:M. Un usuario puede tener varios roles.
+- `Employee → User`: herencia. `Employee` extiende `User` y está registrado en el `DbContext`. Entity Framework Core utiliza la estrategia TPH, por lo que ambos tipos se almacenan en la tabla `Users`.
+
+Las relaciones N:M de Entity Framework Core necesitan tablas intermedias en la base de datos, aunque no es obligatorio crear clases para representarlas. EF Core puede generarlas automáticamente.
+
 ## Ejecutar el proyecto
 
 Desde la raíz del repositorio:
