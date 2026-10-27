@@ -9,9 +9,6 @@
         public bool IsAvailable { get; set; }
 
         // Navigation properties
-        public int LibraryId { get; set; }
-        public Library Library { get; set; } = null!;
-
         public int LibraryBranchId { get; set; }
         public LibraryBranch LibraryBranch { get; set; } = null!;
         //necesito un DTO para recortar el listado de libros de esa sucursal

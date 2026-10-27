@@ -66,9 +66,6 @@ namespace TheLibrary_DataAccessLayer.Migrations
                     b.Property<int>("LibraryBranchId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("LibraryId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");
@@ -80,8 +77,6 @@ namespace TheLibrary_DataAccessLayer.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("LibraryBranchId");
-
-                    b.HasIndex("LibraryId");
 
                     b.ToTable("Books");
                 });
@@ -193,6 +188,9 @@ namespace TheLibrary_DataAccessLayer.Migrations
                 {
                     b.HasBaseType("TheLibrary_DataAccessLayer.Models.User");
 
+                    b.Property<int>("LibraryId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("WorkShift")
                         .IsRequired()
                         .HasColumnType("text");
@@ -237,14 +235,6 @@ namespace TheLibrary_DataAccessLayer.Migrations
                         .HasForeignKey("LibraryBranchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("TheLibrary_DataAccessLayer.Models.Library", "Library")
-                        .WithMany()
-                        .HasForeignKey("LibraryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Library");
 
                     b.Navigation("LibraryBranch");
                 });
