@@ -27,12 +27,12 @@ namespace TheLibrary.Controllers
 
         // Read by Id
         [HttpGet("{id:int}")]
-        public IActionResult GetBookById(int id)
+        public async Task<IActionResult> GetBookById(int id)
         {
             BookDTO book;
             try
             {
-                book = _bookService.GetBookById(id);
+                book = await _bookService.GetBookByIdAsync(id);
             }
             catch (ArgumentException ex)
             {
@@ -51,12 +51,12 @@ namespace TheLibrary.Controllers
 
         // Create
         [HttpPost]
-        public IActionResult Create([FromBody] BookCreateDTO bookCreateDTO)
+        public async Task<IActionResult> Create([FromBody] BookCreateDTO bookCreateDTO)
         {
             // Lógica para guardar con un 201 Created
             try
             {
-                _bookService.AddBook(bookCreateDTO);
+                await _bookService.AddBookAsync(bookCreateDTO);
             }
             catch (ArgumentNullException ex)
             {
@@ -76,11 +76,11 @@ namespace TheLibrary.Controllers
 
         // Delete
         [HttpDelete("{id:int}")]
-        public IActionResult DeleteBook(int id)
+        public async Task<IActionResult> DeleteBook(int id)
         {
             try
             {
-                _bookService.DeleteBook(id);
+                await _bookService.DeleteBookAsync(id);
             }
             catch (Exception ex)
             {
