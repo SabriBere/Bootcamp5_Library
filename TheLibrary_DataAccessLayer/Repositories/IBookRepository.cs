@@ -12,7 +12,7 @@ namespace TheLibrary_DataAccessLayer.Repositories
         Task<List<Book>> GetAllBooksAsync();
         // Book? GetBookById(int id);
         Task<Book?> GetBookByIdAsync(int id);
-        Task AddBookAsync(Book book);
+        Task<Book> AddBookAsync(Book book);
         Task DeleteBookAsync(int id);
     }
 }

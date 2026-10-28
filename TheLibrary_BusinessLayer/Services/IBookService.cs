@@ -7,7 +7,7 @@ namespace TheLibrary_BusinessLayer.Services
     {
         Task<List<BookDTO>> GetAllBooksAsync();
         Task<BookDTO> GetBookByIdAsync(int id);
-        Task AddBookAsync(BookCreateDTO book);
+        Task<BookDTO> AddBookAsync(BookCreateDTO book);
         Task DeleteBookAsync(int id);
     }
 }

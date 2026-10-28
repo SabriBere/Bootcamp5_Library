@@ -55,7 +55,7 @@ namespace TheLibrary_BusinessLayer.Services
             return bookDto;
         }
 
-        public async Task AddBookAsync(BookCreateDTO bookCreateDTO)
+        public async Task<BookDTO> AddBookAsync(BookCreateDTO bookCreateDTO)
         {
             if (bookCreateDTO == null)
             {
@@ -79,7 +79,16 @@ namespace TheLibrary_BusinessLayer.Services
                 LibraryBranchId = bookCreateDTO.LibraryBranchId //indique en que sucursal se encuentra
             };
 
-            await _bookRepository.AddBookAsync(book);
+            var createdBook = await _bookRepository.AddBookAsync(book);
+
+            return new BookDTO
+            {
+                    Id = createdBook.Id,
+                    Title = createdBook.Title,
+                    Year = createdBook.Year,
+                    IsAvailable = createdBook.IsAvailable,
+                    LibraryBranchId = createdBook.LibraryBranchId
+            };
         }
 
         public async Task DeleteBookAsync(int id)

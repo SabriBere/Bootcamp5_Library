@@ -56,7 +56,13 @@ namespace TheLibrary.Controllers
             // Lógica para guardar con un 201 Created
             try
             {
-                await _bookService.AddBookAsync(bookCreateDTO);
+                var createdBook = await _bookService.AddBookAsync(bookCreateDTO);
+
+                return CreatedAtAction(
+                    nameof(GetBookById),
+                    new { id = createdBook.Id },
+                    createdBook
+                );
             }
             catch (ArgumentNullException ex)
             {
@@ -71,7 +77,7 @@ namespace TheLibrary.Controllers
                 return BadRequest(ex.Message);
             }
 
-            return Ok(); // Retornar el libro creado con un 201 Created)
+            // return Ok(); // Retornar el libro creado con un 201 Created)
         }
 
         // Delete
