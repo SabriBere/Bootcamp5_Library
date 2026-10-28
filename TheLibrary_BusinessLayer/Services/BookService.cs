@@ -21,7 +21,11 @@ namespace TheLibrary_BusinessLayer.Services
             {
                 Title = b.Title,
                 Year = b.Year,
-                IsAvailable = b.IsAvailable
+                IsAvailable = b.IsAvailable,
+                LibraryBranchId = b.LibraryBranchId,
+                LibraryBranchName = b.LibraryBranch.Name,
+                LibraryId = b.LibraryBranch.LibraryId,
+                LibraryName = b.LibraryBranch.Library.Name,
             }).ToList();
             return booksDto;
         }
@@ -44,7 +48,7 @@ namespace TheLibrary_BusinessLayer.Services
             {
                 Title = book?.Title,
                 Year = book?.Year,
-                IsAvailable = book?.IsAvailable ?? false
+                IsAvailable = book?.IsAvailable ?? false,
             };
 
             return bookDto;
@@ -66,17 +70,21 @@ namespace TheLibrary_BusinessLayer.Services
             }
             
             var book = new Book
+
             {
                 Title = bookCreateDTO.Title,
                 Year = bookCreateDTO.Year,
-                IsAvailable = true // Por defecto, el libro es disponible
+                IsAvailable = true, // Por defecto, el libro es disponible
+                LibraryBranchId = bookCreateDTO.LibraryBranchId //indique en que sucursal se encuentra
             };
+
             _bookRepository.AddBook(book);
         }
 
         public void DeleteBook(int id)
         {
             var book = _bookRepository.GetBookById(id);
+
             if (book == null)
             {
                 throw new KeyNotFoundException($"No se encontró un libro con el ID {id}.");

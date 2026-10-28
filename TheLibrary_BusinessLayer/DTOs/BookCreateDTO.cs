@@ -9,5 +9,7 @@ namespace TheLibrary_BusinessLayer.DTOs
 
         [Required(ErrorMessage = "Debe tener un año")]
         public string Year { get; set; }
+
+        public int LibraryBranchId { get; set; } //es obligatorio el id de la sucursal
     }
 }

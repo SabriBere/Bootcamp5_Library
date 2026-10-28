@@ -1,4 +1,5 @@
-﻿using TheLibrary_DataAccessLayer.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using TheLibrary_DataAccessLayer.Data;
 using TheLibrary_DataAccessLayer.Models;
 
 namespace TheLibrary_DataAccessLayer.Repositories
@@ -24,10 +25,10 @@ namespace TheLibrary_DataAccessLayer.Repositories
 
         public List<Book> GetAllBooks()
         {
-            return _context.Books.ToList();
+            return _context.Books.Include(b => b.LibraryBranch).ThenInclude(branch => branch.Library).ToList();
         }
 
-        public Book GetBookById(int id)
+        public Book? GetBookById(int id)
         {
             return _context.Books.Find(id);
             // return _books.FirstOrDefault(b => b.Id == id);
@@ -46,7 +47,7 @@ namespace TheLibrary_DataAccessLayer.Repositories
         public void DeleteBook(int id)
         {
             var bookFound = GetBookById(id);
-            _context.Books.Remove(bookFound);
+
             if (bookFound != null)
             {
                 _context.Books.Remove(bookFound);
