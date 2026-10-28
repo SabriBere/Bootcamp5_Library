@@ -1,40 +1,53 @@
-﻿using TheLibrary_DataAccessLayer.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using TheLibrary_DataAccessLayer.Data;
+using TheLibrary_DataAccessLayer.Models;
 
 namespace TheLibrary_DataAccessLayer.Repositories
 {
     public class BookRepository: IBookRepository
     {
-        // Colocar la lista 
-        private static List<Book> _books = new List<Book>()
-            {
-                new Book { Id = 1, Title = "El Quijote", Year = "1605", IsAvailable = true },
-                new Book { Id = 2, Title = "Cien Años de Soledad", Year = "1967", IsAvailable = true },
-                new Book { Id = 3, Title = "La Sombra del Viento", Year = "2001", IsAvailable = true }
-            };
 
-        public List<Book> GetAllBooks()
+        private readonly TheLibraryDbContext _context;
+
+        public BookRepository(TheLibraryDbContext context)
         {
-            return _books;
+            _context = context;
         }
 
-        public Book GetBookById(int id)
+        public async Task<List<Book>> GetAllBooksAsync()
         {
-            return _books.FirstOrDefault(b => b.Id == id);
+            return await _context.Books
+                .Include(book => book.LibraryBranch)
+                .ThenInclude(branch => branch.Library)
+                .ToListAsync();
         }
 
-        public void AddBook(Book book)
+        public async Task<Book?> GetBookByIdAsync(int id)
+        {
+            return  await _context.Books.Include(book => book.LibraryBranch).ThenInclude(branch => branch.Library).FirstOrDefaultAsync(b => b.Id == id);
+            // return _books.FirstOrDefault(b => b.Id == id);
+        }
+
+        public async Task<Book> AddBookAsync(Book book)
         {
             // Asignar un nuevo Id al libro
-            book.Id = _books.Max(b => b.Id) + 1;
-            _books.Add(book);
+            // book.Id = _books.Max(b => b.Id) + 1;
+            // _books.Add(book);
+
+            await _context.Books.AddAsync(book);
+            await _context.SaveChangesAsync(); //guardo los cambios en la db
+
+            return book;
         }
 
-        public void DeleteBook(int id)
+        public async Task DeleteBookAsync(int id)
         {
-            var book = GetBookById(id);
-            if (book != null)
+            var bookFound = await GetBookByIdAsync(id);
+
+            if (bookFound is not null)
             {
-                _books.Remove(book);
+                _context.Books.Remove(bookFound);
+                await _context.SaveChangesAsync();
             }
         }
     }

@@ -14,26 +14,31 @@ namespace TheLibrary_BusinessLayer.Services
             _bookRepository = bookRepository;
         }
 
-        public List<BookDTO> GetAllBooks()
+        public async Task<List<BookDTO>> GetAllBooksAsync()
         {
-            var books = _bookRepository.GetAllBooks();
+            var books = await _bookRepository.GetAllBooksAsync();
             var booksDto = books.Select(b => new BookDTO
             {
                 Title = b.Title,
                 Year = b.Year,
-                IsAvailable = b.IsAvailable
+                IsAvailable = b.IsAvailable,
+                LibraryBranchId = b.LibraryBranchId,
+                LibraryBranchName = b.LibraryBranch.Name,
+                LibraryId = b.LibraryBranch.LibraryId,
+                LibraryName = b.LibraryBranch.Library.Name,
             }).ToList();
+
             return booksDto;
         }
 
-        public BookDTO GetBookById(int id)
+        public async Task<BookDTO>  GetBookByIdAsync(int id)
         {
             if (id <= 0)
             {
                 throw new ArgumentException("El ID del libro debe ser mayor que cero.");
             }
             
-            var book = _bookRepository.GetBookById(id);
+            var book = await _bookRepository.GetBookByIdAsync(id);
 
             if (book == null)
             {
@@ -44,13 +49,13 @@ namespace TheLibrary_BusinessLayer.Services
             {
                 Title = book?.Title,
                 Year = book?.Year,
-                IsAvailable = book?.IsAvailable ?? false
+                IsAvailable = book?.IsAvailable ?? false,
             };
 
             return bookDto;
         }
 
-        public void AddBook(BookCreateDTO bookCreateDTO)
+        public async Task<BookDTO> AddBookAsync(BookCreateDTO bookCreateDTO)
         {
             if (bookCreateDTO == null)
             {
@@ -66,24 +71,37 @@ namespace TheLibrary_BusinessLayer.Services
             }
             
             var book = new Book
+
             {
                 Title = bookCreateDTO.Title,
                 Year = bookCreateDTO.Year,
-                IsAvailable = true // Por defecto, el libro es disponible
+                IsAvailable = true, // Por defecto, el libro es disponible
+                LibraryBranchId = bookCreateDTO.LibraryBranchId //indique en que sucursal se encuentra
             };
-            _bookRepository.AddBook(book);
+
+            var createdBook = await _bookRepository.AddBookAsync(book);
+
+            return new BookDTO
+            {
+                    Id = createdBook.Id,
+                    Title = createdBook.Title,
+                    Year = createdBook.Year,
+                    IsAvailable = createdBook.IsAvailable,
+                    LibraryBranchId = createdBook.LibraryBranchId
+            };
         }
 
-        public void DeleteBook(int id)
+        public async Task DeleteBookAsync(int id)
         {
-            var book = _bookRepository.GetBookById(id);
+            var book = await _bookRepository.GetBookByIdAsync(id);
+
             if (book == null)
             {
                 throw new KeyNotFoundException($"No se encontró un libro con el ID {id}.");
             }
             // Aquí podrías implementar la lógica para eliminar el libro de la lista
             // Por ejemplo, podrías agregar un método DeleteBook en el repositorio
-            _bookRepository.DeleteBook(id);
+            await _bookRepository.DeleteBookAsync(id);
         }
     }
 }

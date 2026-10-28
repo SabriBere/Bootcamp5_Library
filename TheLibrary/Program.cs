@@ -37,6 +37,18 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+    var context = scope.ServiceProvider.GetRequiredService<TheLibraryDbContext>();
+    var seedResult = await DevelopmentDataSeeder.SeedAsync(context);
+
+    app.Logger.LogInformation(
+        "Development seed listo. LibraryId: {LibraryId}; LibraryBranchId: {LibraryBranchId}",
+        seedResult.LibraryId,
+        seedResult.LibraryBranchId);
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

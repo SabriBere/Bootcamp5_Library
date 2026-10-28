@@ -19,20 +19,20 @@ namespace TheLibrary.Controllers
 
         // Read
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var books = _bookService.GetAllBooks();
+            var books = await _bookService.GetAllBooksAsync();
             return Ok(books);
         }
 
         // Read by Id
         [HttpGet("{id:int}")]
-        public IActionResult GetBookById(int id)
+        public async Task<IActionResult> GetBookById(int id)
         {
             BookDTO book;
             try
             {
-                book = _bookService.GetBookById(id);
+                book = await _bookService.GetBookByIdAsync(id);
             }
             catch (ArgumentException ex)
             {
@@ -51,12 +51,18 @@ namespace TheLibrary.Controllers
 
         // Create
         [HttpPost]
-        public IActionResult Create([FromBody] BookCreateDTO bookCreateDTO)
+        public async Task<IActionResult> Create([FromBody] BookCreateDTO bookCreateDTO)
         {
             // Lógica para guardar con un 201 Created
             try
             {
-                _bookService.AddBook(bookCreateDTO);
+                var createdBook = await _bookService.AddBookAsync(bookCreateDTO);
+
+                return CreatedAtAction(
+                    nameof(GetBookById),
+                    new { id = createdBook.Id },
+                    createdBook
+                );
             }
             catch (ArgumentNullException ex)
             {
@@ -71,16 +77,16 @@ namespace TheLibrary.Controllers
                 return BadRequest(ex.Message);
             }
 
-            return Ok(); // Retornar el libro creado con un 201 Created)
+            // return Ok(); // Retornar el libro creado con un 201 Created)
         }
 
         // Delete
         [HttpDelete("{id:int}")]
-        public IActionResult DeleteBook(int id)
+        public async Task<IActionResult> DeleteBook(int id)
         {
             try
             {
-                _bookService.DeleteBook(id);
+                await _bookService.DeleteBookAsync(id);
             }
             catch (Exception ex)
             {
