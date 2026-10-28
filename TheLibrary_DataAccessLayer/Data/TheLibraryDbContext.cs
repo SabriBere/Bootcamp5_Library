@@ -79,6 +79,9 @@ namespace TheLibrary_DataAccessLayer.Data
                 book.Property(b => b.Title);
                 book.Property(b => b.Year);
                 book.Property(b => b.IsAvailable);
+
+                //un libro tiene una biblioteca
+                // y una biblioteca tiene muchos libros
             
                 book.HasOne(b => b.LibraryBranch).WithMany(lb => lb.Books).HasForeignKey(b => b.LibraryBranchId);
             });
@@ -87,13 +90,19 @@ namespace TheLibrary_DataAccessLayer.Data
             modelBuilder.Entity<User>(user =>
             {
                 user.ToTable("Users").HasKey(u => u.Id);
-                user.Property(u => u.FirstName);
-                user.Property(u => u.LastName);
-                user.Property(u => u.Email); //agregar validación
-                user.Property(u => u.DateOfBirth); //agregar validación
+                user.Property(u => u.FirstName).IsRequired().HasMaxLength(100);
+                user.Property(u => u.LastName).IsRequired().HasMaxLength(100);
+                user.Property(u => u.Email).IsRequired().HasMaxLength(150); //agregar validación
 
+                user.HasIndex(u => u.Email).IsUnique(); //email unico e irrepetible
+
+                user.Property(u => u.DateOfBirth).IsRequired(false); //agregar validación
+
+                //un usuario es socio de muchas bibliotecas
+                //y 1 biblioteca tiene muchos usuarios - no necesita un FK por que EF establece la tabla intermedia
                 user.HasMany(u => u.Libraries).WithMany(library => library.Users);
             });
+
             // Role
         }
 
