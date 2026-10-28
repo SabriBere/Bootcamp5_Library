@@ -14,9 +14,9 @@ namespace TheLibrary_BusinessLayer.Services
             _bookRepository = bookRepository;
         }
 
-        public List<BookDTO> GetAllBooks()
+        public async Task<List<BookDTO>> GetAllBooksAsync()
         {
-            var books = _bookRepository.GetAllBooks();
+            var books = await _bookRepository.GetAllBooksAsync();
             var booksDto = books.Select(b => new BookDTO
             {
                 Title = b.Title,
@@ -27,17 +27,18 @@ namespace TheLibrary_BusinessLayer.Services
                 LibraryId = b.LibraryBranch.LibraryId,
                 LibraryName = b.LibraryBranch.Library.Name,
             }).ToList();
+
             return booksDto;
         }
 
-        public BookDTO GetBookById(int id)
+        public async Task<BookDTO>  GetBookByIdAsync(int id)
         {
             if (id <= 0)
             {
                 throw new ArgumentException("El ID del libro debe ser mayor que cero.");
             }
             
-            var book = _bookRepository.GetBookById(id);
+            var book = await _bookRepository.GetBookByIdAsync(id);
 
             if (book == null)
             {
@@ -54,7 +55,7 @@ namespace TheLibrary_BusinessLayer.Services
             return bookDto;
         }
 
-        public void AddBook(BookCreateDTO bookCreateDTO)
+        public async Task AddBookAsync(BookCreateDTO bookCreateDTO)
         {
             if (bookCreateDTO == null)
             {
@@ -78,12 +79,12 @@ namespace TheLibrary_BusinessLayer.Services
                 LibraryBranchId = bookCreateDTO.LibraryBranchId //indique en que sucursal se encuentra
             };
 
-            _bookRepository.AddBook(book);
+            await _bookRepository.AddBookAsync(book);
         }
 
-        public void DeleteBook(int id)
+        public async Task DeleteBookAsync(int id)
         {
-            var book = _bookRepository.GetBookById(id);
+            var book = await _bookRepository.GetBookByIdAsync(id);
 
             if (book == null)
             {
@@ -91,7 +92,7 @@ namespace TheLibrary_BusinessLayer.Services
             }
             // Aquí podrías implementar la lógica para eliminar el libro de la lista
             // Por ejemplo, podrías agregar un método DeleteBook en el repositorio
-            _bookRepository.DeleteBook(id);
+            await _bookRepository.DeleteBookAsync(id);
         }
     }
 }

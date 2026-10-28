@@ -5,9 +5,9 @@ namespace TheLibrary_BusinessLayer.Services
 {
     public interface IBookService
     {
-        List<BookDTO> GetAllBooks();
-        BookDTO GetBookById(int id);
-        void AddBook(BookCreateDTO book);
-        void DeleteBook(int id);
+        Task<List<BookDTO>> GetAllBooksAsync();
+        Task<BookDTO> GetBookByIdAsync(int id);
+        Task AddBookAsync(BookCreateDTO book);
+        Task DeleteBookAsync(int id);
     }
 }

@@ -23,35 +23,38 @@ namespace TheLibrary_DataAccessLayer.Repositories
         //         new Book { Id = 3, Title = "La Sombra del Viento", Year = "2001", IsAvailable = true }
         //     };
 
-        public List<Book> GetAllBooks()
+        public async Task<List<Book>> GetAllBooksAsync()
         {
-            return _context.Books.Include(b => b.LibraryBranch).ThenInclude(branch => branch.Library).ToList();
+            return await _context.Books
+                .Include(book => book.LibraryBranch)
+                .ThenInclude(branch => branch.Library)
+                .ToListAsync();
         }
 
-        public Book? GetBookById(int id)
+        public async Task<Book?> GetBookByIdAsync(int id)
         {
-            return _context.Books.Find(id);
+            return  await _context.Books.FindAsync(id);
             // return _books.FirstOrDefault(b => b.Id == id);
         }
 
-        public void AddBook(Book book)
+        public async Task AddBookAsync(Book book)
         {
             // Asignar un nuevo Id al libro
             // book.Id = _books.Max(b => b.Id) + 1;
             // _books.Add(book);
 
-            _context.Books.Add(book);
-            _context.SaveChanges(); //guardo los cambios en la db
+            await _context.Books.AddAsync(book);
+            await _context.SaveChangesAsync(); //guardo los cambios en la db
         }
 
-        public void DeleteBook(int id)
+        public async Task DeleteBookAsync(int id)
         {
-            var bookFound = GetBookById(id);
+            var bookFound = await GetBookByIdAsync(id);
 
-            if (bookFound != null)
+            if (bookFound is not null)
             {
                 _context.Books.Remove(bookFound);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
     }
