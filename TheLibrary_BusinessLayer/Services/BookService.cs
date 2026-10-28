@@ -19,7 +19,10 @@ namespace TheLibrary_BusinessLayer.Services
             var books = _bookRepository.GetAllBooks();
             var booksDto = books.Select(b => new BookDTO
             {
+                Id = b.Id,
                 Title = b.Title,
+                Author = b.Author,
+                ISBN = b.ISBN,
                 Year = b.Year,
                 IsAvailable = b.IsAvailable
             }).ToList();
@@ -42,7 +45,10 @@ namespace TheLibrary_BusinessLayer.Services
 
             var bookDto = new BookDTO
             {
+                Id = book.Id,
                 Title = book?.Title,
+                Author = book?.Author,
+                ISBN = book?.ISBN,
                 Year = book?.Year,
                 IsAvailable = book?.IsAvailable ?? false
             };
@@ -60,6 +66,14 @@ namespace TheLibrary_BusinessLayer.Services
             {
                 throw new ArgumentException("El título del libro no puede estar vacío.");
             }
+            if (string.IsNullOrWhiteSpace(bookCreateDTO.Author))
+            {
+                throw new ArgumentException("El autor del libro no puede estar vacío.");
+            }
+            if (string.IsNullOrWhiteSpace(bookCreateDTO.ISBN))
+            {
+                throw new ArgumentException("El ISBN del libro no puede estar vacío.");
+            }
             if (string.IsNullOrWhiteSpace(bookCreateDTO.Year))
             {
                 throw new ArgumentException("El año del libro no puede estar vacío.");
@@ -68,6 +82,8 @@ namespace TheLibrary_BusinessLayer.Services
             var book = new Book
             {
                 Title = bookCreateDTO.Title,
+                Author = bookCreateDTO.Author,
+                ISBN = bookCreateDTO.ISBN,
                 Year = bookCreateDTO.Year,
                 IsAvailable = true // Por defecto, el libro es disponible
             };

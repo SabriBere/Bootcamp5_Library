@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TheLibrary_DataAccessLayer.Models
 {
-    public class LibrayBranch
+    public class LibraryBranch
     {
         public int Id { get; set; }
         public required string Name { get; set; }

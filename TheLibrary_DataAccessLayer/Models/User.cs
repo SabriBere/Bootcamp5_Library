@@ -13,7 +13,11 @@ namespace TheLibrary_DataAccessLayer.Models
         public DateTime? DateOfBirth { get; set; }
 
         //Usuario puede ser socio de una o varias bibliotecas
-        public virtual ICollection<Library> Libraries { get; set; } = new List<Library>();
+        //public virtual ICollection<Library> Libraries { get; set; } = new List<Library>();
+        public ICollection<Membership> Subscriptions { get; set; } = new List<Membership>();
         public ICollection<Role> Roles { get; set; }
+
+        //public ICollection<Book> Books { get; set; } = new List<Book>();
+        public ICollection<Loan> Loans { get; set; } = new List<Loan>();
     }
 }

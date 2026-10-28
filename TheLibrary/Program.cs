@@ -25,7 +25,7 @@ builder.Services.AddDbContext<TheLibraryDbContext>(options =>
 
 // Add services to the container.
 //AddSingleton, AddScoped, AddTransient
-builder.Services.AddScoped<IBookRepository, BookRepository>();
+builder.Services.AddScoped<IBookRepository, BookEFRepository>();
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddControllers();
 

@@ -12,8 +12,9 @@ namespace TheLibrary_DataAccessLayer.Models
         public required string Name { get; set; }
         public required string Address { get; set; }
 
-        public ICollection<LibrayBranch> LibrayBranches { get; set; }
-        public ICollection<User> Users { get; set; }
+        public ICollection<LibraryBranch> LibraryBranches { get; set; }
+        //public ICollection<User> Users { get; set; }
+        public ICollection<Membership> Members { get; set; } = new List<Membership>();
     }
 
     //Una sucursal de biblioteca tiene muchos libros (Navegación de ida)

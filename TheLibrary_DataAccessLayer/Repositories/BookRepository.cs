@@ -29,6 +29,17 @@ namespace TheLibrary_DataAccessLayer.Repositories
             _books.Add(book);
         }
 
+        public void UpdateBook(Book book)
+        {
+            var existingBook = GetBookById(book.Id);
+            if (existingBook != null)
+            {
+                existingBook.Title = book.Title;
+                existingBook.Year = book.Year;
+                existingBook.IsAvailable = book.IsAvailable;
+            }
+        }
+
         public void DeleteBook(int id)
         {
             var book = GetBookById(id);
