@@ -79,21 +79,21 @@ namespace TheLibrary_DataAccessLayer.Data
             });
 
             //User
-            modelBuilder.Entity<User>(user =>
-            {
-                user.Property(u => u.FirstName).IsRequired().HasMaxLength(50);
-                user.Property(u => u.LastName).IsRequired().HasMaxLength(50);
-                user.Property(u => u.Email).IsRequired().HasMaxLength(100);
-                user.Property(u => u.DateOfBirth).IsRequired(false);
+            //modelBuilder.Entity<User>(user =>
+            //{
+            //    user.Property(u => u.FirstName).IsRequired().HasMaxLength(50);
+            //    user.Property(u => u.LastName).IsRequired().HasMaxLength(50);
+            //    user.Property(u => u.Email).IsRequired().HasMaxLength(100);
+            //    user.Property(u => u.DateOfBirth).IsRequired(false);
                 
-                user.HasMany(u => u.Subscriptions)
-                    .WithOne(s => s.Member)
-                    .HasForeignKey(s => s.MemberId);
+            //    user.HasMany(u => u.Subscriptions)
+            //        .WithOne(s => s.Member)
+            //        .HasForeignKey(s => s.MemberId);
 
-                user.HasMany(u => u.Loans)
-                    .WithOne(l => l.User)
-                    .HasForeignKey(l => l.UserId);
-            });
+            //    user.HasMany(u => u.Loans)
+            //        .WithOne(l => l.User)
+            //        .HasForeignKey(l => l.UserId);
+            //});
 
             ////Role
             //modelBuilder.Entity<Role>(role =>

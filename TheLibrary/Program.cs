@@ -77,7 +77,7 @@ builder.Services.AddAuthentication(options =>
 // 3. Registro de Servicios de Aplicación
 // -----------------------------------------------------------------------------
 builder.Services.AddScoped<IJwtService, JwtService>();
-// builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 // Add services to the container.
 //AddSingleton, AddScoped, AddTransient
