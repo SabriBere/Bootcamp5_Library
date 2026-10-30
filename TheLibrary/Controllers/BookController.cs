@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TheLibrary_BusinessLayer.DTOs;
+
+using TheLibrary.Common.DTOs;
+
 using TheLibrary_BusinessLayer.Services;
 
 namespace TheLibrary.Controllers
@@ -19,9 +21,9 @@ namespace TheLibrary.Controllers
 
         // Read
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll([FromQuery] int pageIndex = 1, [FromQuery] int pageSize = 10, [FromQuery] string? search = null)
         {
-            var books = _bookService.GetAllBooks();
+            var books = _bookService.GetAllBooks(pageIndex, pageSize, search);
             return Ok(books);
         }
 

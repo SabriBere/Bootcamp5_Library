@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using TheLibrary_DataAccessLayer.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 using Microsoft.EntityFrameworkCore;
 
 namespace TheLibrary_DataAccessLayer.Data
 {
-    public class TheLibraryDbContext: DbContext
+    public class TheLibraryDbContext: IdentityDbContext<User>
     {
         public TheLibraryDbContext(DbContextOptions<TheLibraryDbContext> options) : base(options)
         {
@@ -17,9 +18,9 @@ namespace TheLibrary_DataAccessLayer.Data
         public DbSet<Library> Libraries { get; set; }
         public DbSet<LibraryBranch> LibraryBranches { get; set; }
         public DbSet<Book> Books { get; set; }
-        public DbSet<User> Users { get; set; }
+        //public DbSet<User> Users { get; set; }
         //public DbSet<Employee> Employees { get; set; }
-        public DbSet<Role> Roles { get; set; }
+        //public DbSet<Role> Roles { get; set; }
         public DbSet<Membership> Memberships { get; set; }
         public DbSet<Loan> Loans { get; set; }
 
@@ -80,7 +81,6 @@ namespace TheLibrary_DataAccessLayer.Data
             //User
             modelBuilder.Entity<User>(user =>
             {
-                user.HasKey(u => u.Id);
                 user.Property(u => u.FirstName).IsRequired().HasMaxLength(50);
                 user.Property(u => u.LastName).IsRequired().HasMaxLength(50);
                 user.Property(u => u.Email).IsRequired().HasMaxLength(100);
@@ -89,24 +89,21 @@ namespace TheLibrary_DataAccessLayer.Data
                 user.HasMany(u => u.Subscriptions)
                     .WithOne(s => s.Member)
                     .HasForeignKey(s => s.MemberId);
-                
-                user.HasMany(u => u.Roles)
-                    .WithMany(r => r.Users);
 
                 user.HasMany(u => u.Loans)
                     .WithOne(l => l.User)
                     .HasForeignKey(l => l.UserId);
             });
 
-            //Role
-            modelBuilder.Entity<Role>(role =>
-            {
-                role.HasKey(r => r.Id);
-                role.Property(r => r.Name).IsRequired().HasMaxLength(50);
+            ////Role
+            //modelBuilder.Entity<Role>(role =>
+            //{
+            //    role.HasKey(r => r.Id);
+            //    role.Property(r => r.Name).IsRequired().HasMaxLength(50);
 
-                role.HasMany(r => r.Users)
-                    .WithMany(u => u.Roles);
-            });
+            //    role.HasMany(r => r.Users)
+            //        .WithMany(u => u.Roles);
+            //});
 
             //Membership
             modelBuilder.Entity<Membership>(membership =>

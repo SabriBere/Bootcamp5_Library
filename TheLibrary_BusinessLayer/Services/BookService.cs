@@ -1,6 +1,7 @@
 ﻿using TheLibrary_DataAccessLayer.Repositories;
 using TheLibrary_DataAccessLayer.Models;
-using TheLibrary_BusinessLayer.DTOs;
+
+using TheLibrary.Common.DTOs;
 
 namespace TheLibrary_BusinessLayer.Services
 {
@@ -14,19 +15,19 @@ namespace TheLibrary_BusinessLayer.Services
             _bookRepository = bookRepository;
         }
 
-        public List<BookDTO> GetAllBooks()
+        public PagedResult<BookDTO> GetAllBooks(int pageIndex, int pageSize, string? search)
         {
-            var books = _bookRepository.GetAllBooks();
-            var booksDto = books.Select(b => new BookDTO
-            {
-                Id = b.Id,
-                Title = b.Title,
-                Author = b.Author,
-                ISBN = b.ISBN,
-                Year = b.Year,
-                IsAvailable = b.IsAvailable
-            }).ToList();
-            return booksDto;
+            var books = _bookRepository.GetAllBooks(pageIndex, pageSize, search);
+            //var booksDto = books.Select(b => new BookDTO
+            //{
+            //    Id = b.Id,
+            //    Title = b.Title,
+            //    Author = b.Author,
+            //    ISBN = b.ISBN,
+            //    Year = b.Year,
+            //    IsAvailable = b.IsAvailable
+            //}).ToList();
+            return books;
         }
 
         public BookDTO GetBookById(int id)

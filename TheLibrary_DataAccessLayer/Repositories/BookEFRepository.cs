@@ -4,6 +4,8 @@ using System.Text;
 
 using Microsoft.EntityFrameworkCore;
 
+using TheLibrary.Common.DTOs;
+
 using TheLibrary_DataAccessLayer.Data;
 using TheLibrary_DataAccessLayer.Models;
 
@@ -20,14 +22,48 @@ namespace TheLibrary_DataAccessLayer.Repositories
             _context = context;
         }
 
-        public List<Book> GetAllBooks()
+        public PagedResult<BookDTO> GetAllBooks(int pageIndex, int pageSize, string? search)
         {
-            return _context.Books
+            //0-Obtener todos los libros de la base de datos
+            //Armar la Query para obtener los 
+            IQueryable<Book> query = _context.Books
                 .Include(b => b.LibraryBranch) // Incluir la propiedad de navegación LibraryBranch
                     .ThenInclude(lb => lb.Library) // Incluir la propiedad de navegación Library dentro de LibraryBranch
                 .Include(b => b.Loans) // Incluir la propiedad de navegación Loans
-                    .ThenInclude(l => l.User) // Incluir la propiedad de navegación User dentro de Loans    
-                .ToList();
+                    .ThenInclude(l => l.User); // Incluir la propiedad de navegación User dentro de Loans    
+            
+            //1-Filtro
+            // Filtrar por título o autor si se proporciona un término de búsqueda
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                query = query.Where(b => b.Title.Contains(search) || b.Author.Contains(search) || b.ISBN.Contains(search));
+            }
+
+            //2-Obtener el total de registros
+            int totalRecords = query.Count();
+
+            //3-Paginación
+            var books = query.Skip((pageIndex - 1) * pageSize).Take(pageSize);
+
+            return new PagedResult<BookDTO>
+            {
+                Items = books
+                    .Select(b => new BookDTO
+                    {
+                        Id = b.Id,
+                        Title = b.Title,
+                        Author = b.Author,
+                        ISBN = b.ISBN,
+                        Year = b.Year,
+                        IsAvailable = b.IsAvailable,
+                        LibraryBranchName = b.LibraryBranch.Name,
+                        LibraryName = b.LibraryBranch.Library.Name
+                    })
+                    .ToList(),
+                TotalCount = totalRecords,
+                PageIndex = pageIndex,
+                PageSize = pageSize
+            };
         }
 
         public Book GetBookById(int id)

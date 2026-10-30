@@ -2,6 +2,9 @@
   <Folder Name="/BL/">
     <Project Path="TheLibrary_BusinessLayer/TheLibrary_BusinessLayer.csproj" Id="4c8fdf3f-5d2c-43b5-9cbb-1c104711ca0a" />
   </Folder>
+  <Folder Name="/Common/">
+    <Project Path="TheLibrary.Common/TheLibrary.Common.csproj" Id="90b8f1fc-63b0-43b5-89f8-87beb99dc505" />
+  </Folder>
   <Folder Name="/DAL/">
     <Project Path="TheLibrary_DataAccessLayer/TheLibrary_DataAccessLayer.csproj" Id="b666efbf-7ada-4f53-955f-a1d2fe762019" />
   </Folder>

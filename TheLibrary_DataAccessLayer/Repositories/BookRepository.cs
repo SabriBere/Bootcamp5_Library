@@ -1,4 +1,6 @@
-﻿using TheLibrary_DataAccessLayer.Models;
+﻿using TheLibrary.Common.DTOs;
+
+using TheLibrary_DataAccessLayer.Models;
 
 namespace TheLibrary_DataAccessLayer.Repositories
 {
@@ -12,9 +14,28 @@ namespace TheLibrary_DataAccessLayer.Repositories
                 new Book { Id = 3, Title = "La Sombra del Viento", Year = "2001", IsAvailable = true }
             };
 
-        public List<Book> GetAllBooks()
+        public PagedResult<BookDTO> GetAllBooks(int pageIndex, int pageSize, string? search)
         {
-            return _books;
+            var booksQuery = _books.AsQueryable();
+
+            return new PagedResult<BookDTO>
+            {
+                Items = booksQuery
+                    .Where(b => string.IsNullOrEmpty(search) || b.Title.Contains(search) || b.Author.Contains(search))
+                    .Skip((pageIndex - 1) * pageSize)
+                    .Take(pageSize)
+                    .Select(b => new BookDTO
+                    {
+                        Id = b.Id,
+                        Title = b.Title,
+                        Author = b.Author,
+                        ISBN = b.ISBN,
+                        Year = b.Year,
+                        IsAvailable = b.IsAvailable
+                    })
+                    .ToList(),
+                TotalCount = booksQuery.Count()
+            };
         }
 
         public Book GetBookById(int id)
