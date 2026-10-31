@@ -5,6 +5,8 @@
     {
         public int Id { get; set; }
         public string Title { get; set; }
+        public string Author { get; set; }
+        public string ISBN { get; set; }
         public string Year { get; set; }
         public bool IsAvailable { get; set; }
 
@@ -13,5 +15,6 @@
         public LibraryBranch LibraryBranch { get; set; } = null!;
         //necesito un DTO para recortar el listado de libros de esa sucursal
         //solo devolver libro y info sucursal no más
+        public ICollection<Loan> Loans { get; set; } = new List<Loan>();
     }
 }

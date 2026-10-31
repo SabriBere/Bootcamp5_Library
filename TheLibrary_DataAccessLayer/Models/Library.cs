@@ -18,6 +18,8 @@ namespace TheLibrary_DataAccessLayer.Models
 
         // N:M - Miembros - EF crea la tabla intermedia con las FK de ambos
         public ICollection<User> Users { get; set; } = new List<User>();
+
+        public ICollection<Membership> Members { get; set; } = new List<Membership>();
     }
 
     // Una biblioteca puede tener muchas sucursales (navegación de ida)

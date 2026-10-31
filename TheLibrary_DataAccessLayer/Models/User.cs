@@ -17,5 +17,11 @@ namespace TheLibrary_DataAccessLayer.Models
 
         //roles
         public ICollection<Role> Roles { get; set; } = new List<Role>();
+
+        //membresías
+        public ICollection<Membership> Memberships { get; set; } = new List<Membership>();
+
+        //préstamos
+        public ICollection<Loan> Loans { get; set; } = new List<Loan>();
     }
 }

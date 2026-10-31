@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using TheLibrary_DataAccessLayer.Models;
-
+﻿using TheLibrary_DataAccessLayer.Models;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel;
 
 namespace TheLibrary_DataAccessLayer.Data
 {
@@ -21,6 +16,8 @@ namespace TheLibrary_DataAccessLayer.Data
         public DbSet<Library> Libraries { get; set; }
         public DbSet<LibraryBranch> LibraryBranches { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<Membership> Memberships { get; set; }
+        public DbSet<Loan> Loans { get; set; }
 
         //configurar modelos usando Fluent API
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -44,9 +41,12 @@ namespace TheLibrary_DataAccessLayer.Data
 
                 // Una biblioteca tiene muchos usuarios y un usuario puede ser socio de varias bibliotecas
                 library.HasMany(l => l.Users)
-                .WithMany(u => u.Libraries);
+                .WithMany(u => u.Libraries); //LibraryUsers - Relación intermedia
 
                 //establecer las relaciones - agregar configuración
+                library.HasMany(l => l.Members)
+                .WithOne(m => m.Library)
+                .HasForeignKey(m => m.LibraryId);
 
             });
 
@@ -77,6 +77,8 @@ namespace TheLibrary_DataAccessLayer.Data
             {
                 book.ToTable("Books").HasKey(b => b.Id);
                 book.Property(b => b.Title);
+                book.Property(b => b.Author).IsRequired().HasMaxLength(100);
+                book.Property(b => b.ISBN).IsRequired().HasMaxLength(20);
                 book.Property(b => b.Year);
                 book.Property(b => b.IsAvailable);
 
@@ -104,6 +106,39 @@ namespace TheLibrary_DataAccessLayer.Data
             });
 
             // Role
+            // Agregar Loan y Membership
+
+            modelBuilder.Entity<Membership>(membership =>
+            {
+                membership.HasKey(m => m.Id);
+                membership.Property(m => m.StartDate).IsRequired();
+                membership.Property(m => m.EndDate).IsRequired(false);
+                membership.Property(m => m.IsActive).IsRequired();
+                
+                membership.HasOne(m => m.Member)
+                    .WithMany(u => u.Memberships)
+                    .HasForeignKey(m => m.MemberId);
+                
+                membership.HasOne(m => m.Library)
+                    .WithMany(l => l.Members)
+                    .HasForeignKey(m => m.LibraryId);
+            });
+
+            modelBuilder.Entity<Loan>(loan =>
+            {
+                loan.HasKey(l => l.Id);
+                loan.Property(l => l.LoanDate).IsRequired();
+                loan.Property(l => l.DueDate).IsRequired(false);
+                loan.Property(l => l.ReturnDate).IsRequired(false);
+                
+                loan.HasOne(l => l.Book)
+                    .WithMany(b => b.Loans)
+                    .HasForeignKey(l => l.BookId);
+                
+                loan.HasOne(l => l.User)
+                    .WithMany(u => u.Loans)
+                    .HasForeignKey(l => l.UserId);
+            });
         }
 
     }
