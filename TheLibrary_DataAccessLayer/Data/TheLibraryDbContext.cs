@@ -1,9 +1,10 @@
 ﻿using TheLibrary_DataAccessLayer.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace TheLibrary_DataAccessLayer.Data
 {
-    public class TheLibraryDbContext: DbContext
+    public class TheLibraryDbContext: IdentityDbContext<User>
     {
         public TheLibraryDbContext(DbContextOptions<TheLibraryDbContext> options) : base(options)
         {
@@ -11,11 +12,11 @@ namespace TheLibrary_DataAccessLayer.Data
         }
 
         public DbSet<Book> Books { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<Employee> Employees { get; set; }
+        // public DbSet<User> Users { get; set; }
+        // public DbSet<Employee> Employees { get; set; }
         public DbSet<Library> Libraries { get; set; }
         public DbSet<LibraryBranch> LibraryBranches { get; set; }
-        public DbSet<Role> Roles { get; set; }
+        // public DbSet<Role> Roles { get; set; }
         public DbSet<Membership> Memberships { get; set; }
         public DbSet<Loan> Loans { get; set; }
 
@@ -40,8 +41,8 @@ namespace TheLibrary_DataAccessLayer.Data
                 .HasForeignKey(lb => lb.LibraryId);
 
                 // Una biblioteca tiene muchos usuarios y un usuario puede ser socio de varias bibliotecas
-                library.HasMany(l => l.Users)
-                .WithMany(u => u.Libraries); //LibraryUsers - Relación intermedia
+                // library.HasMany(l => l.Users)
+                // .WithMany(u => u.Libraries); //LibraryUsers - Relación intermedia
 
                 //establecer las relaciones - agregar configuración
                 library.HasMany(l => l.Members)
@@ -91,18 +92,14 @@ namespace TheLibrary_DataAccessLayer.Data
             // User
             modelBuilder.Entity<User>(user =>
             {
-                user.ToTable("Users").HasKey(u => u.Id);
                 user.Property(u => u.FirstName).IsRequired().HasMaxLength(100);
                 user.Property(u => u.LastName).IsRequired().HasMaxLength(100);
-                user.Property(u => u.Email).IsRequired().HasMaxLength(150); //agregar validación
-
-                user.HasIndex(u => u.Email).IsUnique(); //email unico e irrepetible
 
                 user.Property(u => u.DateOfBirth).IsRequired(false); //agregar validación
 
                 //un usuario es socio de muchas bibliotecas
                 //y 1 biblioteca tiene muchos usuarios - no necesita un FK por que EF establece la tabla intermedia
-                user.HasMany(u => u.Libraries).WithMany(library => library.Users);
+                // user.HasMany(u => u.Libraries).WithMany(library => library.Users);
             });
 
             // Role

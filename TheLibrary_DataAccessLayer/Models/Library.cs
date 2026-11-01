@@ -17,7 +17,7 @@ namespace TheLibrary_DataAccessLayer.Models
         public List<LibraryBranch> LibraryBranches { get; set; } = new();
 
         // N:M - Miembros - EF crea la tabla intermedia con las FK de ambos
-        public ICollection<User> Users { get; set; } = new List<User>();
+        // public ICollection<User> Users { get; set; } = new List<User>();
 
         public ICollection<Membership> Members { get; set; } = new List<Membership>();
     }

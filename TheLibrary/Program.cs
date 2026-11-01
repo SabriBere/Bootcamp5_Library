@@ -2,6 +2,8 @@ using TheLibrary.Controllers;
 using TheLibrary_BusinessLayer.Services;
 using TheLibrary_DataAccessLayer.Repositories;
 using TheLibrary_DataAccessLayer.Data;
+using Microsoft.AspNetCore.Identity;
+using TheLibrary_DataAccessLayer.Models;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -22,6 +24,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<TheLibraryDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
+
+builder.Services.AddIdentity<User, IdentityRole>(options =>
+{
+    options.Password.RequireDigit = true;
+    options.Password.RequiredLength = 6;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+}).AddEntityFrameworkStores<TheLibraryDbContext>().AddDefaultTokenProviders();
 
 // Add services to the container.
 //AddSingleton, AddScoped, AddTransient
@@ -62,6 +72,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

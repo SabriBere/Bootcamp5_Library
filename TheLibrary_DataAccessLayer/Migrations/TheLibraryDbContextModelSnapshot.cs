@@ -34,7 +34,7 @@ namespace TheLibrary_DataAccessLayer.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("LibraryUser");
+                    b.ToTable("LibraryUser", (string)null);
                 });
 
             modelBuilder.Entity("RoleUser", b =>
@@ -49,7 +49,7 @@ namespace TheLibrary_DataAccessLayer.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("RoleUser");
+                    b.ToTable("RoleUser", (string)null);
                 });
 
             modelBuilder.Entity("TheLibrary_DataAccessLayer.Models.Book", b =>
@@ -78,7 +78,7 @@ namespace TheLibrary_DataAccessLayer.Migrations
 
                     b.HasIndex("LibraryBranchId");
 
-                    b.ToTable("Books");
+                    b.ToTable("Books", (string)null);
                 });
 
             modelBuilder.Entity("TheLibrary_DataAccessLayer.Models.Library", b =>
@@ -127,7 +127,7 @@ namespace TheLibrary_DataAccessLayer.Migrations
 
                     b.HasIndex("LibraryId");
 
-                    b.ToTable("LibraryBranches");
+                    b.ToTable("LibraryBranches", (string)null);
                 });
 
             modelBuilder.Entity("TheLibrary_DataAccessLayer.Models.Role", b =>
@@ -144,7 +144,7 @@ namespace TheLibrary_DataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("TheLibrary_DataAccessLayer.Models.User", b =>
@@ -177,7 +177,7 @@ namespace TheLibrary_DataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("User");
 

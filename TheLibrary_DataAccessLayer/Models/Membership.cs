@@ -8,7 +8,7 @@ namespace TheLibrary_DataAccessLayer.Models
         public bool IsActive { get; set; }
 
         //Navigation properties
-        public int MemberId { get; set; }
+        public string MemberId { get; set; } = string.Empty;
         public User Member { get; set; } = null!;
         public int LibraryId { get; set; }
         public Library Library { get; set; } = null!;
