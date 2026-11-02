@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TheLibrary_BusinessLayer.DTOs;
+using TheLibrary.Common.DTOs;
 using TheLibrary_BusinessLayer.Services;
 using Microsoft.AspNetCore.Authorization;
 

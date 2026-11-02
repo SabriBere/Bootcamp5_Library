@@ -9,4 +9,7 @@
     <Project Path="TheLibrary/TheLibrary_PresentationLayer.csproj" />
     <Project Path="TheLibrary_ConsoleApp/TheLibrary_ConsoleApp.csproj" Id="e63439cd-d501-421c-b606-0522c0e24c1e" />
   </Folder>
+  <Folder Name="/TheLibrary_Common/">
+    <Project Path="TheLibrary_Common/TheLibrary.Common.csproj" />
+  </Folder>
 </Solution>

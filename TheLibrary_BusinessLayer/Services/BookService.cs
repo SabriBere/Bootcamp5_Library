@@ -1,6 +1,6 @@
 ﻿using TheLibrary_DataAccessLayer.Repositories;
 using TheLibrary_DataAccessLayer.Models;
-using TheLibrary_BusinessLayer.DTOs;
+using TheLibrary.Common.DTOs;
 
 namespace TheLibrary_BusinessLayer.Services
 {

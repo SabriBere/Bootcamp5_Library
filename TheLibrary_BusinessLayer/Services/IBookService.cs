@@ -1,4 +1,4 @@
-﻿using TheLibrary_BusinessLayer.DTOs;
+﻿using TheLibrary.Common.DTOs;
 using TheLibrary_DataAccessLayer.Models;
 
 namespace TheLibrary_BusinessLayer.Services
