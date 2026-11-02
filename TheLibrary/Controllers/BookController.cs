@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TheLibrary_BusinessLayer.DTOs;
 using TheLibrary_BusinessLayer.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TheLibrary.Controllers
 {
@@ -18,6 +19,7 @@ namespace TheLibrary.Controllers
         }
 
         // Read
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
