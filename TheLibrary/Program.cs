@@ -1,4 +1,4 @@
-using TheLibrary.Controllers;
+using TheLibrary_BusinessLayer.Services.Auth;
 using TheLibrary_BusinessLayer.Services;
 using TheLibrary_DataAccessLayer.Repositories;
 using TheLibrary_DataAccessLayer.Data;
@@ -82,8 +82,8 @@ builder.Services.AddAuthentication(options =>
 })
 ;
 
-// builder.Services.AddScoped<IJwtService, JwtService>();
-// builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 // Add services to the container.
 //AddSingleton, AddScoped, AddTransient

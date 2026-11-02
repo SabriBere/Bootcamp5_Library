@@ -1,3 +1,4 @@
+namespace TheLibrary_BusinessLayer.DTOs;
 public class LoginDTO
 {
     public required string Email { get; set; }

@@ -1,3 +1,4 @@
+namespace TheLibrary_BusinessLayer.DTOs;
 public class RegisterDTO
 {
     public required string FirstName { get; set; }

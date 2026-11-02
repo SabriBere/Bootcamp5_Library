@@ -1,4 +1,5 @@
 using TheLibrary_DataAccessLayer.Models;
+namespace TheLibrary_BusinessLayer.Services.Auth;
 
 public interface IJwtService
 {
