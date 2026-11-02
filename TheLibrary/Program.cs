@@ -114,6 +114,20 @@ builder.Services.AddSwaggerGen(options =>
         });
 });
 
+// CORS para el frontend durante el desarrollo.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontendApp", policy =>
+    {
+        policy
+            .AllowAnyOrigin()
+            // En producción, reemplazar por:
+            // .WithOrigins("https://tu-frontend.com")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -141,6 +155,9 @@ if (app.Environment.IsDevelopment())
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "TheLibrary API");
     });
 }
+
+//CORS
+app.UseCors("AllowFrontendApp");
 
 // ¡REGLA DE ORO DE ASP.NET CORE!:
 // UseAuthentication debe ejecutarse obligatoriamente ANTES de UseAuthorization
