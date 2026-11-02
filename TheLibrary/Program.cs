@@ -46,7 +46,7 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
 // 2. Configuración del Middleware de Autenticación JWT Bearer
 // -----------------------------------------------------------------------------
 
-var jwtSettings = builder.Configuration.GetSection("JwtSetting");
+var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 
 var jwtKey = jwtSettings["Key"];
 
@@ -135,10 +135,6 @@ if (app.Environment.IsDevelopment())
         options.SwaggerEndpoint("/openapi/v1.json", "My API");
     });
 }
-
-app.UseHttpsRedirection();
-
-app.UseAuthentication();
 
 // ¡REGLA DE ORO DE ASP.NET CORE!:
 // UseAuthentication debe ejecutarse obligatoriamente ANTES de UseAuthorization
