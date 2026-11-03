@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace TheLibrary.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
 
@@ -19,12 +20,25 @@ namespace TheLibrary.Controllers
         }
 
         // Read
-        [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(
+            [FromQuery] int pageIndex = 1,
+            [FromQuery] int pageSize = 10,
+            [FromQuery] string? search = null
+        )
         {
-            var books = await _bookService.GetAllBooksAsync();
-            return Ok(books);
+            try
+            {
+                var books = await _bookService.GetAllBooksAsync(pageIndex, pageSize, search);
+                return Ok(books);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new
+                {
+                    message = ex.Message
+                });
+            }
         }
 
         // Read by Id

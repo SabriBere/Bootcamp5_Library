@@ -14,21 +14,43 @@ namespace TheLibrary_BusinessLayer.Services
             _bookRepository = bookRepository;
         }
 
-        public async Task<List<BookDTO>> GetAllBooksAsync()
+        public async Task<PagedResult<BookDTO>> GetAllBooksAsync(int pageIndex, int pageSize, string? search)
         {
-            var books = await _bookRepository.GetAllBooksAsync();
-            var booksDto = books.Select(b => new BookDTO
+            if(pageIndex < 1)
             {
-                Title = b.Title,
-                Year = b.Year,
-                IsAvailable = b.IsAvailable,
-                LibraryBranchId = b.LibraryBranchId,
-                LibraryBranchName = b.LibraryBranch.Name,
-                LibraryId = b.LibraryBranch.LibraryId,
-                LibraryName = b.LibraryBranch.Library.Name,
+                 throw new ArgumentException("El número de página debe ser mayor que cero.");
+            }
+
+            if(pageSize < 1 || pageSize > 100)
+            {
+                throw new ArgumentException("El número de página debe ser entre 1 y 100");
+            }
+
+            var(books, totalCount)= await _bookRepository.GetAllBooksAsync(pageIndex, pageSize, search);
+            
+            var booksDto = books.Select(book => new BookDTO
+            {
+                Id = book.Id,
+                Title = book.Title,
+                Author = book.Author,
+                ISBN = book.ISBN,
+                Year = book.Year,
+                IsAvailable = book.IsAvailable,
+
+                LibraryBranchId = book.LibraryBranchId,
+                LibraryBranchName = book.LibraryBranch.Name,
+
+                LibraryId = book.LibraryBranch.LibraryId,
+                LibraryName = book.LibraryBranch.Library.Name
             }).ToList();
 
-            return booksDto;
+            return new PagedResult<BookDTO>
+            {
+                Items = booksDto,
+                TotalCount = totalCount,
+                PageIndex = pageIndex,
+                PageSize = pageSize
+            };
         }
 
         public async Task<BookDTO>  GetBookByIdAsync(int id)

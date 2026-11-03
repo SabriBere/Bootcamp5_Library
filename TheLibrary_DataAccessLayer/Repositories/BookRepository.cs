@@ -14,12 +14,42 @@ namespace TheLibrary_DataAccessLayer.Repositories
             _context = context;
         }
 
-        public async Task<List<Book>> GetAllBooksAsync()
+        public async Task<(List<Book> Books, int TotalCount)> GetAllBooksAsync(
+            int pageIndex,
+            int pageSize,
+            string? search)
         {
-            return await _context.Books
+            var query = _context.Books
+                .AsNoTracking()
                 .Include(book => book.LibraryBranch)
                 .ThenInclude(branch => branch.Library)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                var searchTerm = search.Trim();
+
+                query = query.Where(book =>
+                    EF.Functions.ILike(
+                        book.Title,
+                        $"%{searchTerm}%") ||
+                    EF.Functions.ILike(
+                        book.Author,
+                        $"%{searchTerm}%") ||
+                    EF.Functions.ILike(
+                        book.ISBN,
+                        $"%{searchTerm}%"));
+            }
+
+            var totalCount = await query.CountAsync();
+
+            var books = await query
+                .OrderBy(book => book.Id)
+                .Skip((pageIndex - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
+
+            return (books, totalCount);
         }
 
         public async Task<Book?> GetBookByIdAsync(int id)
