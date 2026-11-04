@@ -11,6 +11,7 @@ using Microsoft.OpenApi;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using TheLibrary_PresentationLayer.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -156,8 +157,13 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+//Middleware
+app.UseMiddleware<ExeptionHandlingMiddleware>();
+
 //CORS
 app.UseCors("AllowFrontendApp");
+
+app.UseHttpsRedirection();
 
 // ¡REGLA DE ORO DE ASP.NET CORE!:
 // UseAuthentication debe ejecutarse obligatoriamente ANTES de UseAuthorization
